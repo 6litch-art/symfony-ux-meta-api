@@ -31,11 +31,6 @@ class FacebookExtension extends Extension
         $configuration = new Configuration();
         $config = $processor->processConfiguration($configuration, $configs);
         $this->setConfiguration($container, $config, $configuration->getTreeBuilder()->getRootNode()->getNode()->getName());
-
-        //
-        // Alias declaration
-        $container->setAlias(FacebookService::class, 'facebook.service')->setPublic(true);
-        $container->setAlias(FacebookController::class, 'facebook.controller')->setPublic(true);
     }
 
     public function setConfiguration(ContainerBuilder $container, array $config, $globalKey = "")
