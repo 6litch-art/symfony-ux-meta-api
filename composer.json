@@ -1,0 +1,43 @@
+{
+    "name": "xkzl/meta-facebook-api",
+    "type": "symfony-bundle",
+    "description": "Google Analytics API integration for Symfony",
+    "keywords": ["symfony", "facebook", "meta", "pixel", "api"],
+    "homepage": "https://gitlab.glitchr.io/repository-public/symfony",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Marco Meyer",
+            "email": "marco.meyerconde@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Meta\\Facebook\\": "./src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\Meta\\Facebook\\": "./Tests"
+        }
+    },
+    "require": {
+        "php": ">=7.2.5",
+        "symfony/framework-bundle": "^4.0|^5.0|^6.0",
+        "symfony/dependency-injection": "^4.0|^5.0|^6.0",
+        "symfony/http-kernel": "^4.0|^5.0|^6.0",
+        "symfony/config": "^4.0|^5.0|^6.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.5",
+        "symfony/framework-bundle": "^4.0|^5.0|^6.0",
+        "symfony/twig-bundle": "^4.0|^5.0|^6.0",
+        "symfony/var-dumper": "^4.0|^5.0|^6.0"
+    },
+    "config": {
+        "preferred-install": {
+            "*": "dist"
+        },
+        "sort-packages": true
+    }
+}

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+
+        <defaults public="false" />
+
+        <!-- Twig declarations -->
+        <service id="meta.facebook.twig_extension" class="Meta\Facebook\Twig\FacebookTwigExtension" >
+            <tag name="twig.extension" />
+        </service>
+
+        <!-- Service declarations -->
+        <service id="meta.facebook.service" class="Meta\Facebook\Service\FacebookService">
+            <argument type="service" id="parameter_bag" />
+            <argument type="service" id="cache.adapter" />
+        </service>
+
+        <!-- Litener declarations -->
+        <service id="meta.facebook.listener" class="Meta\Facebook\Subscriber\FacebookListener">
+            <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequest" />
+            <tag name="kernel.event_listener" event="kernel.response" method="onKernelResponse" />
+            <argument type="service" id="request_stack" />
+            <argument type="service" id="parameter_bag" />
+            <argument type="service" id="twig" />
+        </service>
+    </services>
+</container>
