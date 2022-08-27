@@ -1,7 +1,7 @@
 {
     "name": "xkzl/meta-facebook-api",
     "type": "symfony-bundle",
-    "description": "Google Analytics API integration for Symfony",
+    "description": "Meta Facebook API integration for Symfony",
     "keywords": ["symfony", "facebook", "meta", "pixel", "api"],
     "homepage": "https://gitlab.glitchr.io/repository-public/symfony",
     "license": "MIT",
