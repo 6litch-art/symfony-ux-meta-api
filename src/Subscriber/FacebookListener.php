@@ -50,10 +50,14 @@ class FacebookListener
 
     private function allowRender(ResponseEvent $event)
     {
+        if (!$event->isMainRequest())
+            return false;
+
         if (!$this->enable)
             return false;
 
-        if(!$this->pixelId) return;
+        if (!$this->autoAppend)
+            return false;
 
         if($this->isEasyAdmin())
             return false;
@@ -62,19 +66,19 @@ class FacebookListener
         if ($contentType && !str_contains($contentType, "text/html"))
             return false;
 
-        if (!$event->isMainRequest())
-            return false;
-
         return !$this->isProfiler($event);
     }
 
     public function onKernelRequest(RequestEvent $event)
     {
+        if (!$event->isMainRequest()) return;
+
         $this->enable     = $this->parameterBag->get("facebook.enable");
         if (!$this->enable)
             return false;
 
-        $this->domainVerificationKey     = $this->parameterBag->get("facebook.domainVerificationKey");
+        $this->autoAppend            = $this->parameterBag->get("facebook.autoappend");
+        $this->domainVerificationKey = $this->parameterBag->get("facebook.domainVerificationKey");
         if($this->domainVerificationKey) {
 
             $meta = "<meta name='facebook-domain-verification' content='".$this->domainVerificationKey."' />";
@@ -87,10 +91,6 @@ class FacebookListener
 
         $this->pixelId     = $this->parameterBag->get("facebook.pixelId");
         if(!$this->pixelId) return;
-
-        $this->autoAppend = $this->parameterBag->get("facebook.autoappend");
-        if (!$this->autoAppend)
-            return false;
 
         $javascript =
             "<!-- Facebook Pixel Code -->
@@ -126,10 +126,10 @@ class FacebookListener
         $meta = $this->twig->getGlobals()["meta_facebook"]["meta"] ?? "";
         $content = preg_replace(['/<\/head\b[^>]*>/'], [$meta."$0"], $response->getContent(), 1);
 
-        if (!$this->autoAppend) {
+        if($this->pixelId) {
 
             $javascript = $this->twig->getGlobals()["meta_facebook"]["javascript"] ?? "";
-            $content = preg_replace(['/<\/head\b[^>]*>/'], [$javascript."$0"], $response->getContent(), 1);
+            $content = preg_replace(['/<\/head\b[^>]*>/'], [$javascript."$0"], $content, 1);
         }
 
         if(!is_instanceof($response, [StreamedResponse::class, BinaryFileResponse::class]))
