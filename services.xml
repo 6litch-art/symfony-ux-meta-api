@@ -12,12 +12,6 @@
             <tag name="twig.extension" />
         </service>
 
-        <!-- Service declarations -->
-        <service id="meta.facebook.service" class="Meta\Facebook\Service\FacebookService">
-            <argument type="service" id="parameter_bag" />
-            <argument type="service" id="cache.adapter" />
-        </service>
-
         <!-- Litener declarations -->
         <service id="meta.facebook.listener" class="Meta\Facebook\Subscriber\FacebookListener">
             <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequest" />
