@@ -1,5 +1,5 @@
 {
-    "name": "xkzl/meta-facebook-api",
+    "name": "glitchr/meta-facebook-api",
     "type": "symfony-bundle",
     "description": "Meta Facebook API integration for Symfony",
     "keywords": ["symfony", "facebook", "meta", "pixel", "api"],
