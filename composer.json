@@ -1,9 +1,9 @@
 {
-    "name": "glitchr/meta-facebook-api",
+    "name": "glitchr/ux-meta",
     "type": "symfony-bundle",
     "description": "Meta Facebook API integration for Symfony",
     "keywords": ["symfony", "facebook", "meta", "pixel", "api"],
-    "homepage": "https://gitlab.glitchr.io/repository-public/symfony",
+    "homepage": "https://gitlab.glitchr.io/repository-public/symfony/ux",
     "license": "MIT",
     "authors": [
         {
