@@ -12,7 +12,20 @@ use Symfony\Component\HttpKernel\Event\ResponseEvent;
 
 class FacebookListener
 {
-    private $twig;
+    /**
+     * @var Environment
+     */
+    protected $twig;
+
+    /**
+     * @var RequestStack
+     */
+    protected $requestStack;
+
+    /**
+     * @var ParameterBagInterface
+     */
+    protected $parameterBag;
 
     private $pixelId;
     private $enable = false;
