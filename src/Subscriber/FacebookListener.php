@@ -30,6 +30,7 @@ class FacebookListener
     private $pixelId;
     private $enable = false;
 
+
     public function __construct(RequestStack $requestStack, ParameterBagInterface $parameterBag, Environment $twig)
     {
         $this->twig = $twig;
@@ -61,6 +62,8 @@ class FacebookListener
         return !empty($eaParents);
     }
 
+    protected $autoAppend;
+    protected $domainVerificationKey;
     private function allowRender(ResponseEvent $event)
     {
         if (!$event->isMainRequest())
