@@ -12,7 +12,7 @@ class Configuration implements ConfigurationInterface
     /**
      * @inheritdoc
      */
-    public function getConfigTreeBuilder() : TreeBuilder
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $this->treeBuilder = new TreeBuilder('facebook');
 
@@ -23,7 +23,10 @@ class Configuration implements ConfigurationInterface
     }
 
     private $treeBuilder;
-    public function getTreeBuilder() : TreeBuilder { return $this->treeBuilder; }
+    public function getTreeBuilder(): TreeBuilder
+    {
+        return $this->treeBuilder;
+    }
 
     private function addGlobalOptionsSection(ArrayNodeDefinition $rootNode)
     {
@@ -33,11 +36,11 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->booleanNode('enable')
                     ->info('Enable feature')
-                    ->defaultValue(True)
+                    ->defaultValue(true)
                     ->end()
                 ->booleanNode('autoappend')
                     ->info('Auto-append required dependencies into HTML page')
-                    ->defaultValue(True)
+                    ->defaultValue(true)
                     ->end()
                 ->scalarNode('pixelId')
                     ->info('id to load (can be set later)')
@@ -50,5 +53,4 @@ class Configuration implements ConfigurationInterface
             ->end()
         ;
     }
-
 }

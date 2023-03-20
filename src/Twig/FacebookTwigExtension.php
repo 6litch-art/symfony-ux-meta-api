@@ -6,7 +6,7 @@ use Twig\Extension\AbstractExtension;
 
 class FacebookTwigExtension extends AbstractExtension
 {
-    public function __construct() {
-
+    public function __construct()
+    {
     }
 }

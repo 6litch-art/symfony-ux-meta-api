@@ -55,10 +55,11 @@ class FacebookListener
         $parents = [];
         $parent = $controller;
 
-        while(class_exists($parent) && ( $parent = get_parent_class($parent)))
+        while (class_exists($parent) && ($parent = get_parent_class($parent))) {
             $parents[] = $parent;
+        }
 
-        $eaParents = array_filter($parents, fn($c) => str_starts_with($c, "EasyCorp\Bundle\EasyAdminBundle"));
+        $eaParents = array_filter($parents, fn ($c) => str_starts_with($c, "EasyCorp\Bundle\EasyAdminBundle"));
         return !empty($eaParents);
     }
 
@@ -66,37 +67,44 @@ class FacebookListener
     protected $domainVerificationKey;
     private function allowRender(ResponseEvent $event)
     {
-        if (!$event->isMainRequest())
+        if (!$event->isMainRequest()) {
             return false;
+        }
 
-        if (!$this->enable)
+        if (!$this->enable) {
             return false;
+        }
 
-        if (!$this->autoAppend)
+        if (!$this->autoAppend) {
             return false;
+        }
 
-        if($this->isEasyAdmin())
+        if ($this->isEasyAdmin()) {
             return false;
+        }
 
         $contentType = $event->getResponse()->headers->get('content-type');
-        if ($contentType && !str_contains($contentType, "text/html"))
+        if ($contentType && !str_contains($contentType, "text/html")) {
             return false;
+        }
 
         return !$this->isProfiler($event);
     }
 
     public function onKernelRequest(RequestEvent $event)
     {
-        if (!$event->isMainRequest()) return;
+        if (!$event->isMainRequest()) {
+            return;
+        }
 
         $this->enable     = $this->parameterBag->get("facebook.enable");
-        if (!$this->enable)
+        if (!$this->enable) {
             return false;
+        }
 
         $this->autoAppend            = $this->parameterBag->get("facebook.autoappend");
         $this->domainVerificationKey = $this->parameterBag->get("facebook.domainVerificationKey");
-        if($this->domainVerificationKey) {
-
+        if ($this->domainVerificationKey) {
             $meta = "<meta name='facebook-domain-verification' content='".$this->domainVerificationKey."' />";
 
             $this->twig->addGlobal("meta_facebook", array_merge(
@@ -106,7 +114,9 @@ class FacebookListener
         }
 
         $this->pixelId     = $this->parameterBag->get("facebook.pixelId");
-        if(!$this->pixelId) return;
+        if (!$this->pixelId) {
+            return;
+        }
 
         $javascript =
             "<!-- Facebook Pixel Code -->
@@ -135,23 +145,24 @@ class FacebookListener
 
     public function onKernelResponse(ResponseEvent $event)
     {
-        if (!$this->allowRender($event)) return false;
+        if (!$this->allowRender($event)) {
+            return false;
+        }
 
         $response = $event->getResponse();
 
         $meta = $this->twig->getGlobals()["meta_facebook"]["meta"] ?? "";
         $content = preg_replace(['/<\/head\b[^>]*>/'], [$meta."$0"], $response->getContent(), 1);
 
-        if($this->pixelId) {
-
+        if ($this->pixelId) {
             $javascript = $this->twig->getGlobals()["meta_facebook"]["javascript"] ?? "";
             $content = preg_replace(['/<\/head\b[^>]*>/'], [$javascript."$0"], $content, 1);
         }
 
-        if(!is_instanceof($response, [StreamedResponse::class, BinaryFileResponse::class]))
+        if (!is_instanceof($response, [StreamedResponse::class, BinaryFileResponse::class])) {
             $response->setContent($content);
+        }
 
         return true;
     }
-
 }
