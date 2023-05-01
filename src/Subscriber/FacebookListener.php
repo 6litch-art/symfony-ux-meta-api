@@ -10,6 +10,9 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Twig\Environment;
 
+/**
+ *
+ */
 class FacebookListener
 {
     protected Environment $twig;
@@ -28,6 +31,10 @@ class FacebookListener
         $this->requestStack = $requestStack;
     }
 
+    /**
+     * @param $event
+     * @return bool
+     */
     public function isProfiler($event)
     {
         $route = $event->getRequest()->get('_route');
@@ -35,6 +42,9 @@ class FacebookListener
         return str_starts_with($route, '_wdt') || str_starts_with($route, '_profiler');
     }
 
+    /**
+     * @return bool
+     */
     public function isEasyAdmin()
     {
         $request = $this->requestStack->getCurrentRequest();
@@ -50,7 +60,7 @@ class FacebookListener
             $parents[] = $parent;
         }
 
-        $eaParents = array_filter($parents, fn ($c) => str_starts_with($c, "EasyCorp\Bundle\EasyAdminBundle"));
+        $eaParents = array_filter($parents, fn($c) => str_starts_with($c, "EasyCorp\Bundle\EasyAdminBundle"));
 
         return !empty($eaParents);
     }
@@ -58,6 +68,10 @@ class FacebookListener
     protected $autoAppend;
     protected $domainVerificationKey;
 
+    /**
+     * @param ResponseEvent $event
+     * @return bool
+     */
     private function allowRender(ResponseEvent $event)
     {
         if (!$event->isMainRequest()) {

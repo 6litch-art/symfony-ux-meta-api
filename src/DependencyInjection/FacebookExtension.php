@@ -8,6 +8,9 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
+/**
+ *
+ */
 class FacebookExtension extends Extension
 {
     /**
@@ -30,6 +33,12 @@ class FacebookExtension extends Extension
         $this->setConfiguration($container, $config, $configuration->getTreeBuilder()->getRootNode()->getNode()->getName());
     }
 
+    /**
+     * @param ContainerBuilder $container
+     * @param array $config
+     * @param $globalKey
+     * @return void
+     */
     public function setConfiguration(ContainerBuilder $container, array $config, $globalKey = '')
     {
         foreach ($config as $key => $value) {
