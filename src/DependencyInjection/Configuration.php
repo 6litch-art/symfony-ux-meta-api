@@ -30,7 +30,7 @@ class Configuration implements ConfigurationInterface
 
     private function addGlobalOptionsSection(ArrayNodeDefinition $rootNode)
     {
-        $dataPath = dirname(__DIR__, 5).'/data';
+        $dataPath = dirname(__DIR__, 5) . '/data';
 
         $rootNode
             ->children()

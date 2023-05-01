@@ -19,7 +19,7 @@ class FacebookExtension extends Extension
         // Load service declaration (includes services, controllers,..)
 
         // Format XML
-        $loader = new XmlFileLoader($container, new FileLocator(\dirname(__DIR__, 2).'/config'));
+        $loader = new XmlFileLoader($container, new FileLocator(\dirname(__DIR__, 2) . '/config'));
         $loader->load('services.xml');
 
         //
@@ -34,7 +34,7 @@ class FacebookExtension extends Extension
     {
         foreach ($config as $key => $value) {
             if (!empty($globalKey)) {
-                $key = $globalKey.'.'.$key;
+                $key = $globalKey . '.' . $key;
             }
 
             if (is_array($value)) {
