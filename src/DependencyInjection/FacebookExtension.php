@@ -10,6 +10,7 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use function dirname;
 
 class FacebookExtension extends Extension
 {
@@ -23,7 +24,7 @@ class FacebookExtension extends Extension
         // Load service declaration (includes services, controllers,..)
 
         // Format XML
-        $loader = new XmlFileLoader($container, new FileLocator(\dirname(__DIR__, 2).'/config'));
+        $loader = new XmlFileLoader($container, new FileLocator(dirname(__DIR__, 2).'/config'));
         $loader->load('services.xml');
 
         //

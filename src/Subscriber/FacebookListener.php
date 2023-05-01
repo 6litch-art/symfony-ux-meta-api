@@ -15,20 +15,20 @@ class FacebookListener
     /**
      * @var Environment
      */
-    protected $twig;
+    protected Environment $twig;
 
     /**
      * @var RequestStack
      */
-    protected $requestStack;
+    protected RequestStack $requestStack;
 
     /**
      * @var ParameterBagInterface
      */
-    protected $parameterBag;
+    protected ParameterBagInterface $parameterBag;
 
     private $pixelId;
-    private $enable = false;
+    private bool $enable = false;
 
 
     public function __construct(RequestStack $requestStack, ParameterBagInterface $parameterBag, Environment $twig)
@@ -59,12 +59,13 @@ class FacebookListener
             $parents[] = $parent;
         }
 
-        $eaParents = array_filter($parents, fn ($c) => str_starts_with($c, "EasyCorp\Bundle\EasyAdminBundle"));
+        $eaParents = array_filter($parents, fn($c) => str_starts_with($c, "EasyCorp\Bundle\EasyAdminBundle"));
         return !empty($eaParents);
     }
 
     protected $autoAppend;
     protected $domainVerificationKey;
+
     private function allowRender(ResponseEvent $event)
     {
         if (!$event->isMainRequest()) {
@@ -97,15 +98,15 @@ class FacebookListener
             return;
         }
 
-        $this->enable     = $this->parameterBag->get("facebook.enable");
+        $this->enable = $this->parameterBag->get("facebook.enable");
         if (!$this->enable) {
-            return false;
+            return;
         }
 
-        $this->autoAppend            = $this->parameterBag->get("facebook.autoappend");
+        $this->autoAppend = $this->parameterBag->get("facebook.autoappend");
         $this->domainVerificationKey = $this->parameterBag->get("facebook.domainVerificationKey");
         if ($this->domainVerificationKey) {
-            $meta = "<meta name='facebook-domain-verification' content='".$this->domainVerificationKey."' />";
+            $meta = "<meta name='facebook-domain-verification' content='" . $this->domainVerificationKey . "' />";
 
             $this->twig->addGlobal("meta_facebook", array_merge(
                 $this->twig->getGlobals()["meta_facebook"] ?? [],
@@ -113,7 +114,7 @@ class FacebookListener
             ));
         }
 
-        $this->pixelId     = $this->parameterBag->get("facebook.pixelId");
+        $this->pixelId = $this->parameterBag->get("facebook.pixelId");
         if (!$this->pixelId) {
             return;
         }
@@ -129,11 +130,11 @@ class FacebookListener
                 t.src=v;s=b.getElementsByTagName(e)[0];
                 s.parentNode.insertBefore(t,s)}(window, document,'script',
                 'https://connect.facebook.net/en_US/fbevents.js');
-                fbq('init', '".$this->pixelId."');
+                fbq('init', '" . $this->pixelId . "');
                 fbq('track', 'PageView');
             </script>
             <noscript>
-                <img height='1' width='1' style='display:none' src='https://www.facebook.com/tr?id=".$this->pixelId."&ev=PageView&noscript=1'/>
+                <img height='1' width='1' style='display:none' src='https://www.facebook.com/tr?id=" . $this->pixelId . "&ev=PageView&noscript=1'/>
             </noscript>
             <!-- End Facebook Pixel Code -->";
 
@@ -146,23 +147,22 @@ class FacebookListener
     public function onKernelResponse(ResponseEvent $event)
     {
         if (!$this->allowRender($event)) {
-            return false;
+            return;
         }
 
         $response = $event->getResponse();
 
         $meta = $this->twig->getGlobals()["meta_facebook"]["meta"] ?? "";
-        $content = preg_replace(['/<\/head\b[^>]*>/'], [$meta."$0"], $response->getContent(), 1);
+        $content = preg_replace(['/<\/head\b[^>]*>/'], [$meta . "$0"], $response->getContent(), 1);
 
         if ($this->pixelId) {
             $javascript = $this->twig->getGlobals()["meta_facebook"]["javascript"] ?? "";
-            $content = preg_replace(['/<\/head\b[^>]*>/'], [$javascript."$0"], $content, 1);
+            $content = preg_replace(['/<\/head\b[^>]*>/'], [$javascript . "$0"], $content, 1);
         }
 
         if (!is_instanceof($response, [StreamedResponse::class, BinaryFileResponse::class])) {
             $response->setContent($content);
         }
 
-        return true;
     }
 }

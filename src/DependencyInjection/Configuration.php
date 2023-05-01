@@ -22,7 +22,8 @@ class Configuration implements ConfigurationInterface
         return $this->treeBuilder;
     }
 
-    private $treeBuilder;
+    private TreeBuilder $treeBuilder;
+
     public function getTreeBuilder(): TreeBuilder
     {
         return $this->treeBuilder;
@@ -30,27 +31,26 @@ class Configuration implements ConfigurationInterface
 
     private function addGlobalOptionsSection(ArrayNodeDefinition $rootNode)
     {
-        $dataPath = dirname(__DIR__, 5)."/data";
+        $dataPath = dirname(__DIR__, 5) . "/data";
 
         $rootNode
             ->children()
-                ->booleanNode('enable')
-                    ->info('Enable feature')
-                    ->defaultValue(true)
-                    ->end()
-                ->booleanNode('autoappend')
-                    ->info('Auto-append required dependencies into HTML page')
-                    ->defaultValue(true)
-                    ->end()
-                ->scalarNode('pixelId')
-                    ->info('id to load (can be set later)')
-                    ->defaultValue('')
-                    ->end()
-                ->scalarNode('domainVerificationKey')
-                    ->info('Domain Verification is done periodically by META')
-                    ->defaultValue('')
-                    ->end()
+            ->booleanNode('enable')
+            ->info('Enable feature')
+            ->defaultValue(true)
             ->end()
-        ;
+            ->booleanNode('autoappend')
+            ->info('Auto-append required dependencies into HTML page')
+            ->defaultValue(true)
+            ->end()
+            ->scalarNode('pixelId')
+            ->info('id to load (can be set later)')
+            ->defaultValue('')
+            ->end()
+            ->scalarNode('domainVerificationKey')
+            ->info('Domain Verification is done periodically by META')
+            ->defaultValue('')
+            ->end()
+            ->end();
     }
 }
