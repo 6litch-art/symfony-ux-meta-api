@@ -2,15 +2,14 @@
 
 namespace Meta\Facebook\DependencyInjection;
 
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
-
-use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 
 class Configuration implements ConfigurationInterface
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getConfigTreeBuilder(): TreeBuilder
     {
@@ -31,7 +30,7 @@ class Configuration implements ConfigurationInterface
 
     private function addGlobalOptionsSection(ArrayNodeDefinition $rootNode)
     {
-        $dataPath = dirname(__DIR__, 5) . "/data";
+        $dataPath = dirname(__DIR__, 5).'/data';
 
         $rootNode
             ->children()
